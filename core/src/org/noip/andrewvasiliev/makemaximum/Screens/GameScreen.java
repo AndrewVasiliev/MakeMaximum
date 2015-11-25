@@ -1,6 +1,7 @@
 package org.noip.andrewvasiliev.makemaximum.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import org.noip.andrewvasiliev.makemaximum.MakeMaximum;
 import org.noip.andrewvasiliev.makemaximum.Utils.Constants;
+import org.noip.andrewvasiliev.makemaximum.objects.GameBoardActor;
+import org.noip.andrewvasiliev.makemaximum.objects.HudActor;
 
 /**
  * Created by root on 05.11.15.
@@ -17,14 +20,28 @@ public class GameScreen implements Screen {
     final MakeMaximum game;
     private Stage stage;
 
+    public GameBoardActor gameboard;
+    public HudActor hud;
+
+
     public GameScreen (final MakeMaximum gam, final Stage stg) {
         game = gam;
-
         stage = stg;
-        //stage = new Stage(new ScreenViewport());
-        //stage = new Stage(new StretchViewport(Constants.WIDTH, Constants.HEIGHT));
-        //Constants.HEIGHT = stage.getViewport().getScreenHeight();
-        //Constants.WIDTH = stage.getViewport().getScreenWidth();
+
+        gameboard = new GameBoardActor(9);
+        hud = new HudActor();
+
+        for (int i=0; i<2; i++){
+            hud.setPlayerName(i, gameboard.gb.getPlayerName(i));
+            hud.setPlayerScore(i, gameboard.gb.getPlayerScore(i));
+            hud.setPlayerTablePos(i, gameboard.getPlayerTableXCoord(i) /*+ gameboard.getPlayerTableWidth() / 2*/, game.HEIGHT);
+            hud.setPlayerTableWidth(i, gameboard.getPlayerTableWidth());
+        }
+
+        stage.addActor(gameboard);
+        stage.addActor(hud);
+
+        Gdx.input.setInputProcessor(gameboard);
 
         //stage.addActor(game.background);
     }
@@ -67,4 +84,8 @@ public class GameScreen implements Screen {
     public void dispose() {
 
     }
+
+
+
+
 }

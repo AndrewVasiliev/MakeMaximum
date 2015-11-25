@@ -29,12 +29,14 @@ public class GameBoard {
             puzzle = getPuzzle(locFieldSize);
             vertical_move = true;
             current_position = (locFieldSize - 1) / 2;
-            players[0].name = "Player 1";
+            players[0].name = "Игрок 1";
             players[0].points = 0;
-            players[1].name = "Player 2";
+            players[1].name = "Игрок 2";
             players[1].points = 0;
             current_player = 0;
         }
+
+
     }
 
     private int[] getPuzzle(int fs) {
@@ -133,5 +135,28 @@ public class GameBoard {
         if (count>0)
             return false;
         return true;
+    }
+
+    public String getPlayerName(int i){
+        return players[i].name;
+    }
+
+    public int getPlayerScore(int i){
+        return players[i].points;
+    }
+
+    public void playerMove (int movePosition){
+        int moveX, moveY;
+        if (vertical_move) {
+            moveX = current_position;
+            moveY = movePosition;
+        } else {
+            moveX = movePosition;
+            moveY = current_position;
+        }
+        players[current_player].points += getTile(moveX, moveY);
+        setTile(moveX, moveY, 0);
+        current_player ^= 1;
+        current_position = movePosition;
     }
 }
