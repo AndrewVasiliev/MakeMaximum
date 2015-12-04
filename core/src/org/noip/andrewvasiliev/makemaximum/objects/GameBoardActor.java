@@ -10,11 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Array;
 
 import org.noip.andrewvasiliev.makemaximum.MakeMaximum;
 
 import java.util.Random;
+
+import javax.sound.midi.Sequence;
 
 /**
  * Created by root on 06.11.15.
@@ -43,6 +47,7 @@ public class GameBoardActor extends Actor implements InputProcessor{
 
     public GameBoardActor (int FieldSize) {
         locFieldSize = FieldSize;
+        CalculateTileParam(MakeMaximum.WIDTH, MakeMaximum.HEIGHT);
 
         locGroup = new Group();
         this.setTouchable(Touchable.enabled);
@@ -65,11 +70,14 @@ public class GameBoardActor extends Actor implements InputProcessor{
 
         tiles = new TileActor[locFieldSize * locFieldSize];
 
-        CalculateTileParam(MakeMaximum.WIDTH, MakeMaximum.HEIGHT);
+        //CalculateTileParam(MakeMaximum.WIDTH, MakeMaximum.HEIGHT);
 
 
         for (int y = 0; y< locFieldSize; y++) {
             for (int x = 0; x < locFieldSize; x++) {
+                if (gb.getTile(x, y) == 0) {
+                    continue;
+                }
                 tiles[y * locFieldSize + x] = new TileActor(tileTextureArr, gb.getTile(x,y), x, y);
 
                 tiles[y * locFieldSize + x].setSize(width, height);
@@ -145,9 +153,16 @@ public class GameBoardActor extends Actor implements InputProcessor{
 
 
             MoveToAction moveAction = new MoveToAction();
-            moveAction.setPosition(0f, 0f);
+
+            moveAction.setPosition(plr_coor[gb.current_player], 0f);
             moveAction.setDuration(0.3f);
-            temp.addAction(moveAction);
+
+            RemoveActorAction removeActor = new RemoveActorAction();
+
+            SequenceAction mySequence = new SequenceAction(moveAction, removeActor);
+
+            temp.addAction(mySequence);
+            //temp.addAction(removeActor);
 
             //locGroup.removeActor(temp);
             //MakeMaximum.multiplexer.removeProcessor(temp);
@@ -189,7 +204,24 @@ public class GameBoardActor extends Actor implements InputProcessor{
         return plr_coor[i];
     }
 
+  /*  public int getPlayerTableGlobalXMidCoord (int i){
+        Vector2 coord = this.screenToLocalCoordinates(new Vector2((float) plr_coor[i], (float) 0));
+        return (int)coord.x + plr_width/2 ;
+    }
+
+    public Vector2 getPlayerTableGlobalVectorMidCoord (int i){
+        Vector2 coord = this.screenToLocalCoordinates(new Vector2((float) plr_coor[i], (float) 0));
+        coord.x += (plr_width - width)/2 ;
+
+        return coord;
+    }
+*/
     public int getPlayerTableWidth (){
         return plr_width;
     }
+
+    public float getTileWidth (){
+        return width;
+    }
+
 }

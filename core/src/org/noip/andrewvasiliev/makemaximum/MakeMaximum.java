@@ -7,7 +7,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -19,20 +23,23 @@ import org.noip.andrewvasiliev.makemaximum.objects.BackgroundActor;
 import org.noip.andrewvasiliev.makemaximum.objects.GameBoard;
 import org.noip.andrewvasiliev.makemaximum.objects.GameBoardActor;
 import org.noip.andrewvasiliev.makemaximum.objects.HudActor;
+import org.noip.andrewvasiliev.makemaximum.objects.TileActor;
 import org.noip.andrewvasiliev.makemaximum.objects.myStage;
 
 
-public class MakeMaximum extends Game {
+public class MakeMaximum extends Game implements InputProcessor {
 	public BackgroundActor background;
+	public GameScreen locGameScreen;
 	/*public GameBoardActor gameboard;
 	public HudActor hud;*/
 	public Stage stage;
 	public static int HEIGHT;
 	public static int WIDTH;
+	public static BitmapFont tileFont;
 	public static BitmapFont fontSmall;
 	public static BitmapFont fontMedium;
 	public static BitmapFont fontLarge;
-public static InputMultiplexer multiplexer;
+//public static InputMultiplexer multiplexer;
 
 	@Override
 	public void create () {
@@ -40,12 +47,13 @@ public static InputMultiplexer multiplexer;
 		SmartFontGenerator fontGen = new SmartFontGenerator();
 		FileHandle exoFile = Gdx.files.internal("liberation.ttf");
 
+		tileFont = fontGen.createFont(exoFile, "exo-tile", /*(int)locGameScreen.gameboard.getWidth()*/ 48);
 		fontSmall = fontGen.createFont(exoFile, "exo-small", 24);
 		fontMedium = fontGen.createFont(exoFile, "exo-medium", 48);
 		fontLarge = fontGen.createFont(exoFile, "exo-large", 64);
 
 
-		 multiplexer = new InputMultiplexer();
+		// multiplexer = new InputMultiplexer();
 
 		stage = new myStage(new ScreenViewport());
 		//stage = new Stage(new StretchViewport(Constants.WIDTH, Constants.HEIGHT));
@@ -64,7 +72,14 @@ public static InputMultiplexer multiplexer;
 
 		Gdx.input.setInputProcessor(gameboard);
 */
-		this.setScreen(new GameScreen(this, stage));
+
+		Gdx.input.setInputProcessor(this);
+
+		locGameScreen = new GameScreen(this, stage);
+
+
+
+		this.setScreen(locGameScreen);
 
 
 
@@ -130,6 +145,72 @@ public static InputMultiplexer multiplexer;
 	@Override
 	public void dispose() {
 
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		Vector2 coord = this.locGameScreen.gameboard.screenToLocalCoordinates(new Vector2((float) screenX, (float) screenY));
+		TileActor temp = (TileActor) locGameScreen.gameboard.locGroup.hit(coord.x, coord.y, true);
+		if (temp != null) {
+			//temp.touch = true;
+			locGameScreen.TilePressed(temp);
+
+
+/*			MoveToAction moveAction = new MoveToAction();
+
+			moveAction.setPosition(plr_coor[gb.current_player], 0f);
+			moveAction.setDuration(0.3f);
+
+			RemoveActorAction removeActor = new RemoveActorAction();
+
+			SequenceAction mySequence = new SequenceAction(moveAction, removeActor);
+
+			temp.addAction(mySequence);
+*/
+			//temp.addAction(removeActor);
+
+			//locGroup.removeActor(temp);
+			//MakeMaximum.multiplexer.removeProcessor(temp);
+
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
 	}
 
 /*	public String getPlayerName (int i) {

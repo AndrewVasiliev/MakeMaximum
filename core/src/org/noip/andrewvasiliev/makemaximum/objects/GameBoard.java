@@ -145,18 +145,31 @@ public class GameBoard {
         return players[i].points;
     }
 
-    public void playerMove (int movePosition){
+    public void playerMove (/*int movePosition*/ int x, int y){
         int moveX, moveY;
+        moveX = x;
+        moveY = y;
+        /*
         if (vertical_move) {
             moveX = current_position;
             moveY = movePosition;
         } else {
             moveX = movePosition;
             moveY = current_position;
-        }
+        }*/
         players[current_player].points += getTile(moveX, moveY);
         setTile(moveX, moveY, 0);
         current_player ^= 1;
-        current_position = movePosition;
+        //current_position = movePosition;
+
+        current_position = vertical_move?y:x;
+        vertical_move = !vertical_move;
+    }
+
+    public boolean isCorrectMove (int x, int y) {
+        if ( (getTile(x,y) != 0) && (vertical_move?(current_position==x):(current_position==y)) ) {
+            return true;
+        }
+        return false;
     }
 }

@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -12,11 +16,12 @@ import org.noip.andrewvasiliev.makemaximum.MakeMaximum;
 import org.noip.andrewvasiliev.makemaximum.Utils.Constants;
 import org.noip.andrewvasiliev.makemaximum.objects.GameBoardActor;
 import org.noip.andrewvasiliev.makemaximum.objects.HudActor;
+import org.noip.andrewvasiliev.makemaximum.objects.TileActor;
 
 /**
  * Created by root on 05.11.15.
  */
-public class GameScreen implements Screen {
+public class GameScreen implements Screen  {
     final MakeMaximum game;
     private Stage stage;
 
@@ -28,7 +33,7 @@ public class GameScreen implements Screen {
         game = gam;
         stage = stg;
 
-        gameboard = new GameBoardActor(9);
+        gameboard = new GameBoardActor(3);
         hud = new HudActor();
 
         for (int i=0; i<2; i++){
@@ -41,9 +46,30 @@ public class GameScreen implements Screen {
         stage.addActor(gameboard);
         stage.addActor(hud);
 
-        Gdx.input.setInputProcessor(gameboard);
+        //Gdx.input.setInputProcessor(gameboard);
 
-        //stage.addActor(game.background);
+
+
+    }
+
+    public void TilePressed (TileActor ta) {
+        if (!gameboard.gb.isCorrectMove(ta.column, ta.row)) {
+            return;
+        }
+
+        MoveToAction moveAction = new MoveToAction();
+        Vector2 tempTarget = hud.getPlayerTabelCoord(gameboard.gb.current_player);
+        moveAction.setPosition(tempTarget.x - gameboard.getTileWidth()/2, tempTarget.y);
+        moveAction.setDuration(0.3f);
+        RemoveActorAction removeActor = new RemoveActorAction();
+        SequenceAction mySequence = new SequenceAction(moveAction, removeActor);
+        ta.addAction(mySequence);
+
+        gameboard.gb.playerMove(ta.column, ta.row);
+        hud.setPlayerScore(0, gameboard.gb.getPlayerScore(0));
+        hud.setPlayerScore(1, gameboard.gb.getPlayerScore(1));
+
+
     }
 
     @Override

@@ -25,7 +25,7 @@ import org.noip.andrewvasiliev.makemaximum.MakeMaximum;
 /**
  * Created by root on 06.11.15.
  */
-public class TileActor extends Actor implements InputProcessor {
+public class TileActor extends Actor {
     private Array<TextureRegion> starSprite;
     private int value;
     public int column, row;
@@ -43,7 +43,7 @@ public class TileActor extends Actor implements InputProcessor {
         starSprite = sp;
 
         valueLabelStyle = new Label.LabelStyle();
-        valueLabelStyle.font = MakeMaximum.fontMedium;
+        valueLabelStyle.font = MakeMaximum.tileFont;
         //valueLabelStyle.font.setColor(new Color( Integer.parseInt("7fff0033", 16)));
 
         valueLabel = new Label(Integer.toString(this.value), valueLabelStyle);
@@ -92,55 +92,5 @@ public class TileActor extends Actor implements InputProcessor {
 //    public void act (float delta){
 //    }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if ( (getX()<= screenX) && ((getX() + getWidth()) >= screenX) && (getY() <= screenY) && ((getY() + getHeight()) >= screenY) ) {
-        //Vector2 coord = this.screenToLocalCoordinates(new Vector2((float) screenX, (float) screenY));
-        //if (coord.x > 0 && coord.x < getWidth() && coord.y> 0 && coord.y < getHeight()) {
-            touch = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if ( (getX()<= screenX) && ((getX() + getWidth()) >= screenX) && (getY() <= screenY) && ((getY() + getHeight()) >= screenY) ) {
-            //Vector2 coord = this.screenToLocalCoordinates(new Vector2((float) screenX, (float) screenY));
-            //if (coord.x > 0 && coord.x < getWidth() && coord.y> 0 && coord.y < getHeight()) {
-            touch = false;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }
