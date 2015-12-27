@@ -33,7 +33,7 @@ public class GameScreen implements Screen  {
         game = gam;
         stage = stg;
 
-        gameboard = new GameBoardActor(3);
+        gameboard = new GameBoardActor(5);
         hud = new HudActor();
 
         for (int i=0; i<2; i++){
@@ -45,6 +45,8 @@ public class GameScreen implements Screen  {
 
         stage.addActor(gameboard);
         stage.addActor(hud);
+
+        hud.setCurrentPlayer (0);
 
         //Gdx.input.setInputProcessor(gameboard);
 
@@ -68,6 +70,8 @@ public class GameScreen implements Screen  {
         gameboard.gb.playerMove(ta.column, ta.row);
         hud.setPlayerScore(0, gameboard.gb.getPlayerScore(0));
         hud.setPlayerScore(1, gameboard.gb.getPlayerScore(1));
+
+        hud.setCurrentPlayer(gameboard.getCurrentPlayer());
 
 
     }

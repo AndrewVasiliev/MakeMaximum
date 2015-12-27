@@ -172,4 +172,8 @@ public class GameBoard {
         }
         return false;
     }
+
+    public int getCurrentPlayer () {
+        return current_player;
+    }
 }

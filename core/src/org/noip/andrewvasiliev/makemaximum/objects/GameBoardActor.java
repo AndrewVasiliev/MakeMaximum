@@ -224,4 +224,8 @@ public class GameBoardActor extends Actor implements InputProcessor{
         return width;
     }
 
+    public int getCurrentPlayer () {
+        return gb.getCurrentPlayer();
+    }
+
 }

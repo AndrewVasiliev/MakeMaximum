@@ -1,6 +1,7 @@
 package org.noip.andrewvasiliev.makemaximum.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
 import org.noip.andrewvasiliev.makemaximum.MakeMaximum;
+import org.noip.andrewvasiliev.makemaximum.Utils.Constants;
 
 import java.util.Random;
 
@@ -21,17 +23,32 @@ import java.util.Random;
 public class HudActor extends Actor {
     private Group locGroup;
     private Label[] playerName, playerScore;
+    private String[] sName;
     private Table[] playerTable;
+    private int curr_player;
+    Label.LabelStyle playerNameStyle, playerNameStyleActive;
+
+    private Label nextMoveMessage;
+    private String nextMoveString;
+    private Table nextMoveTable;
 
     public HudActor () {
+        curr_player = 0;
+
         locGroup = new Group();
 
         playerName = new Label[2];
         playerScore = new Label[2];
         playerTable = new Table[2];
+        sName = new String[2];
 
-        Label.LabelStyle playerNameStyle = new Label.LabelStyle();
+        playerNameStyle = new Label.LabelStyle();
         playerNameStyle.font = MakeMaximum.fontSmall;
+
+        playerNameStyleActive = new Label.LabelStyle();
+        playerNameStyleActive.font = MakeMaximum.fontSmall;
+        playerNameStyleActive.fontColor = Color.CYAN;
+
 
         Label.LabelStyle playerScoreStyle = new Label.LabelStyle();
         playerScoreStyle.font = MakeMaximum.fontMedium;
@@ -56,6 +73,16 @@ public class HudActor extends Actor {
             playerTable[i].add(playerName[i]).row();
             playerTable[i].add(playerScore[i]).row();
         }
+
+        nextMoveString = "Следующий ход у %s";
+        nextMoveMessage = new Label("xxxxxxxxxxx", playerNameStyle);
+        nextMoveTable = new Table();
+        nextMoveTable.add(nextMoveMessage).row();
+        nextMoveTable.setPosition(Constants.WIDTH/2, Constants.HEIGHT/2);
+        locGroup.addActor(nextMoveTable);
+        nextMoveTable.center();
+        //nextMoveTable.setVisible(false);
+
     }
 
 
@@ -67,6 +94,7 @@ public class HudActor extends Actor {
 
     public void setPlayerName (int playerNum, String playerName){
         this.playerName[playerNum].setText(playerName);
+        sName[playerNum] = playerName;
     }
 
     public void setPlayerScore (int playerNum, int playerScore){
@@ -74,7 +102,7 @@ public class HudActor extends Actor {
     }
 
     public void setPlayerTablePos (int playerNum, float x, float y){
-        playerTable[playerNum].setPosition(x,y);
+        playerTable[playerNum].setPosition(x, y);
     }
 
     public void setPlayerTableWidth (int playerNum, float wid) {
@@ -93,6 +121,19 @@ public class HudActor extends Actor {
 
 
         return coord;
+    }
+
+    private void changeNextMessageString (int plr) {
+        String tempStr;
+        tempStr = String.format(nextMoveString, sName[plr]);
+        nextMoveMessage.setText(tempStr);
+    }
+
+    public void setCurrentPlayer (int plr) {
+        curr_player = plr;
+        playerName[curr_player].setStyle(playerNameStyleActive);
+        playerName[curr_player^1].setStyle(playerNameStyle);
+        changeNextMessageString(plr);
     }
 
 }
