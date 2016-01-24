@@ -10,9 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 
 import org.noip.andrewvasiliev.makemaximum.MakeMaximum;
+import org.noip.andrewvasiliev.makemaximum.Screens.GameScreen;
 import org.noip.andrewvasiliev.makemaximum.Utils.Constants;
 
 import java.util.Random;
@@ -29,10 +31,14 @@ public class HudActor extends Actor {
     Label.LabelStyle playerNameStyle, playerNameStyleActive;
 
     private Label nextMoveMessage;
+    private TextField nextMoveMessage2;
     private String nextMoveString;
     private Table nextMoveTable;
+    private GameScreen gscr;
 
-    public HudActor () {
+    public HudActor (final GameScreen gscr_temp) {
+        gscr = gscr_temp;
+
         curr_player = 0;
 
         locGroup = new Group();
@@ -56,7 +62,7 @@ public class HudActor extends Actor {
         for (int i=0; i<2; i++){
             playerName[i] = new Label("", playerNameStyle);
             playerScore[i] = new Label("", playerScoreStyle);
-            playerTable[i] = new Table();
+            playerTable[i] = new Table(gscr.game.uiSkin);
         }
 
         for (int i=0; i<2; i++) {
@@ -75,12 +81,16 @@ public class HudActor extends Actor {
         }
 
         nextMoveString = "Следующий ход у %s";
+
         nextMoveMessage = new Label("xxxxxxxxxxx", playerNameStyle);
+
+        nextMoveMessage2 = new TextField("1234567890", gscr.game.uiSkin);
+        nextMoveMessage2.setWidth(400);
         nextMoveTable = new Table();
-        nextMoveTable.add(nextMoveMessage).row();
+        nextMoveTable.add(nextMoveMessage2).row();
         nextMoveTable.setPosition(Constants.WIDTH/2, Constants.HEIGHT/2);
-        locGroup.addActor(nextMoveTable);
-        nextMoveTable.center();
+        locGroup.addActor(nextMoveTable /*nextMoveMessage2*/);
+        //nextMoveTable.center();
         //nextMoveTable.setVisible(false);
 
     }

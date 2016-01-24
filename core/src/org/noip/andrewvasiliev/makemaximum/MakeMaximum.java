@@ -7,12 +7,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -33,6 +35,7 @@ public class MakeMaximum extends Game implements InputProcessor {
 	/*public GameBoardActor gameboard;
 	public HudActor hud;*/
 	public Stage stage;
+	public Skin uiSkin;
 	public static int HEIGHT;
 	public static int WIDTH;
 	public static BitmapFont tileFont;
@@ -40,6 +43,7 @@ public class MakeMaximum extends Game implements InputProcessor {
 	public static BitmapFont fontMedium;
 	public static BitmapFont fontLarge;
 //public static InputMultiplexer multiplexer;
+
 
 	@Override
 	public void create () {
@@ -51,6 +55,9 @@ public class MakeMaximum extends Game implements InputProcessor {
 		fontSmall = fontGen.createFont(exoFile, "exo-small", 24);
 		fontMedium = fontGen.createFont(exoFile, "exo-medium", 48);
 		fontLarge = fontGen.createFont(exoFile, "exo-large", 64);
+
+		uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+		uiSkin.add("tileFont", tileFont);
 
 
 		// multiplexer = new InputMultiplexer();

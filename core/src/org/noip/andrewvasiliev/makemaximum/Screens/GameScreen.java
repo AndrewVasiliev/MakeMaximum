@@ -22,7 +22,7 @@ import org.noip.andrewvasiliev.makemaximum.objects.TileActor;
  * Created by root on 05.11.15.
  */
 public class GameScreen implements Screen  {
-    final MakeMaximum game;
+    public final MakeMaximum game;
     private Stage stage;
 
     public GameBoardActor gameboard;
@@ -34,7 +34,7 @@ public class GameScreen implements Screen  {
         stage = stg;
 
         gameboard = new GameBoardActor(5);
-        hud = new HudActor();
+        hud = new HudActor(this);
 
         for (int i=0; i<2; i++){
             hud.setPlayerName(i, gameboard.gb.getPlayerName(i));
