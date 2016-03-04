@@ -71,8 +71,8 @@ public class TileActor extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha) {
-        if ( (GameBoardActor.gb.vertical_move && (GameBoardActor.gb.current_position == column)) ||
-                (!GameBoardActor.gb.vertical_move && (GameBoardActor.gb.current_position == row)) ) {
+        if ( (GameBoardActor.locGameLogic.vertical_move && (GameBoardActor.locGameLogic.current_position == column)) ||
+                (!GameBoardActor.locGameLogic.vertical_move && (GameBoardActor.locGameLogic.current_position == row)) ) {
             batch.draw(starSprite.get(1), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(),
                     getScaleX(), getScaleY(), getRotation());
         }

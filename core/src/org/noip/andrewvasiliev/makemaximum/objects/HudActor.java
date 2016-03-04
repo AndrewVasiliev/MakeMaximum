@@ -84,7 +84,7 @@ public class HudActor extends Actor {
 
         nextMoveMessage = new Label("xxxxxxxxxxx", playerNameStyle);
 
-        nextMoveMessage2 = new TextField("1234567890", gscr.game.uiSkin);
+        nextMoveMessage2 = new TextField("1234567890АБВГДЕ", gscr.game.uiSkin);
         nextMoveMessage2.setWidth(400);
         nextMoveTable = new Table();
         nextMoveTable.add(nextMoveMessage2).row();

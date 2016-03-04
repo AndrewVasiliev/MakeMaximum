@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Created by root on 06.11.15.
  */
-public class GameBoard {
+public class GameLogic {
     private int locFieldSize;
     public StructPlayers players[] = new StructPlayers[2];
     private int puzzle[];
@@ -14,7 +14,7 @@ public class GameBoard {
     public int current_position; //текущая координата на поле. если vertical_move = true, то горизонтальная позиция столбца. если vertical_move = false, то вертикальная позиция строки.
     public int current_player; //игрок, который должен сделать ход
 
-    public void GameBoard(int FieldSize, int[] restoredField) {
+    public void GameLogic(int FieldSize, int[] restoredField) {
         locFieldSize = FieldSize;
 
         puzzle = new int[locFieldSize * locFieldSize];
